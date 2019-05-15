@@ -10,10 +10,10 @@ public class main {
         JFrame f = new JFrame("Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(1600, 900);
-        Board b = new Board(5, 5);
+        Board b = new Board(100, 100);
         b.setBoard(0, 0);
         b.setBoard(3, 4);
-        f.add(b);
+        f.getContentPane().add(b);
         f.pack();
         f.setVisible(true);
     }
