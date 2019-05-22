@@ -28,7 +28,7 @@ public class BoardTest {
         Board b = new Board(5, 5);
         for (int i = 0; i < b.getBoardHeight(); i++) {
             for (int j = 0; j < b.getBoardWidth(); j++) {
-                b.setBoard(i, j);
+                b.setAlive(i, j);
             }
         }
 

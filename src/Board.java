@@ -33,12 +33,21 @@ public class Board extends JPanel implements MouseListener {
     }
 
     /**
-     * Flips a position on the board.
+     * Sets a position on the board to alive.
      * @param x X Position.
      * @param y Y position.
      */
-    public void setBoard(int x, int y) {
-        board[y][x] = !board[y][x];
+    public void setAlive(int x, int y) {
+        board[y][x] = true;
+    }
+
+    /**
+     * Sets a position on the board to dead.
+     * @param x X Position.
+     * @param y Y position.
+     */
+    public void setDead(int x, int y) {
+        board[y][x] = false;
     }
 
     /**
@@ -81,22 +90,24 @@ public class Board extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        setBoard(e.getX() / 10, e.getY() / 10);
+        setAlive(e.getX() / 10, e.getY() / 10);
         System.out.println(countNeighbors(e.getX() / 10, e.getY() / 10));
         repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Hello2");
+
     }
+
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("Hello3");
+
     }
+
     @Override
     public void mouseExited(MouseEvent e) {
-        System.out.println("Hello4");
+
     }
 
     @Override
@@ -132,5 +143,49 @@ public class Board extends JPanel implements MouseListener {
         }
 
         return neighbors;
+    }
+
+    public boolean updateCell(int x, int y) {
+
+        int neighbors = countNeighbors(x, y);
+
+        if (board[y][x]) {
+
+            // Rule 1: Any live cell with fewer than two live neighbours dies.
+            if (neighbors < 2) {
+                return false;
+
+            // Rule 2: Any live cell with more than three live neighbours dies.
+            } else if (neighbors > 3) {
+                return false;
+
+            // Rule 3: Any live cell with two or three live neighbours lives, unchanged, to the next generation.
+            } else {
+                return true;
+            }
+
+        } else {
+
+            if (neighbors == 3) {
+                // Rule 4: Any dead cell with exactly three live neighbours will come to life.
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public void updateBoard() {
+
+        boolean[][] newBoard = new boolean[boardHeight][boardWidth];
+
+        for (int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < boardWidth; x++) {
+                newBoard[y][x] = updateCell(x, y);
+            }
+        }
+
+        board = newBoard;
+        repaint();
     }
 }
