@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -33,6 +34,16 @@ public class Board extends JPanel implements MouseListener {
     }
 
     /**
+     * Returns whether a cell at position (x, y) is alive.
+     * @param x X Position.
+     * @param y Y Position.
+     * @return True if cell at (x, y) is alive.
+     */
+    public boolean isAlive(int x, int y) {
+        return board[y][x];
+    }
+
+    /**
      * Sets a position on the board to alive.
      * @param x X Position.
      * @param y Y position.
@@ -48,71 +59,6 @@ public class Board extends JPanel implements MouseListener {
      */
     public void setDead(int x, int y) {
         board[y][x] = false;
-    }
-
-    /**
-     * Debug function.
-     */
-    public void printBoard() {
-        for (int i = 0; i < boardHeight; i++) {
-            for (int j = 0; j < boardWidth; j++) {
-                System.out.print(board[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(boardWidth * 10, boardHeight * 10);
-    }
-
-    /**
-     * Draws board as a JPanel.
-     * @param g Graphics object.
-     */
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (int i = 0; i < boardHeight; i++) {
-            for (int j = 0; j < boardWidth; j++) {
-
-                if (board[i][j]) {
-                    g.setColor(Color.WHITE);
-                    g.fillRect(j * 10, i * 10, 10, 10);
-                } else {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(j * 10, i * 10, 10, 10);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        setAlive(e.getX() / 10, e.getY() / 10);
-        System.out.println(countNeighbors(e.getX() / 10, e.getY() / 10));
-        repaint();
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
     }
 
     /**
@@ -187,5 +133,62 @@ public class Board extends JPanel implements MouseListener {
 
         board = newBoard;
         repaint();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(boardWidth * 10, boardHeight * 10);
+    }
+
+    /**
+     * Draws board as a JPanel.
+     * @param g Graphics object.
+     */
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (int i = 0; i < boardHeight; i++) {
+            for (int j = 0; j < boardWidth; j++) {
+
+                if (board[i][j]) {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(j * 10, i * 10, 10, 10);
+                } else {
+                    g.setColor(Color.BLACK);
+                    g.fillRect(j * 10, i * 10, 10, 10);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        int xCoord = e.getX() / 10;
+        int yCoord = e.getY() / 10;
+
+        if (isAlive(xCoord, yCoord)) {
+            setDead(xCoord, yCoord);
+        } else {
+            setAlive(xCoord, yCoord);
+        }
+
+        repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }

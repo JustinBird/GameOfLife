@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Window {
 
@@ -17,7 +20,12 @@ public class Window {
         f.setJMenuBar(new WindowMenuBar());
         f.pack();
         f.setVisible(true);
-        b.updateBoard();
+
+        ScheduledExecutorService runner = Executors.newScheduledThreadPool(1);
+        runner.scheduleAtFixedRate(()-> {
+            b.updateBoard();
+        }, 0, 1000L, TimeUnit.MILLISECONDS);
+
     }
 
     private class WindowMenuBar extends JMenuBar {
