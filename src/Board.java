@@ -3,6 +3,10 @@ import java.awt.*;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Board extends JPanel implements MouseListener {
 
@@ -11,6 +15,8 @@ public class Board extends JPanel implements MouseListener {
     private int boardWidth;
     private boolean[][] board;
 
+    private boolean running;
+    private ScheduledFuture<?> future;
 
     public int getBoardHeight() {
         return boardHeight;
@@ -18,6 +24,10 @@ public class Board extends JPanel implements MouseListener {
 
     public int getBoardWidth() {
         return boardWidth;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
     /**
@@ -133,6 +143,25 @@ public class Board extends JPanel implements MouseListener {
 
         board = newBoard;
         repaint();
+    }
+
+    public void startUpdates() {
+
+        if (!isRunning()) {
+            ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
+            future = schedule.scheduleAtFixedRate(() -> {
+                updateBoard();
+            }, 0, 1000L, TimeUnit.MILLISECONDS);
+            running = true;
+        }
+    }
+
+    public void stopUpdates() {
+
+        if (isRunning()) {
+            future.cancel(true);
+            running = false;
+        }
     }
 
     @Override

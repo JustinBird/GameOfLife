@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class Window {
@@ -21,10 +22,7 @@ public class Window {
         f.pack();
         f.setVisible(true);
 
-        ScheduledExecutorService runner = Executors.newScheduledThreadPool(1);
-        runner.scheduleAtFixedRate(()-> {
-            b.updateBoard();
-        }, 0, 1000L, TimeUnit.MILLISECONDS);
+
 
     }
 
@@ -42,6 +40,22 @@ public class Window {
                 }
             });
             RunMenu.add(step);
+
+            JMenuItem start = new JMenuItem("Start");
+            start.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    b.startUpdates();
+                }
+            });
+            RunMenu.add(start);
+
+            JMenuItem stop = new JMenuItem("Stop");
+            stop.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    b.stopUpdates();
+                }
+            });
+            RunMenu.add(stop);
 
             add(RunMenu);
         }
