@@ -8,9 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class Board extends JPanel implements MouseListener {
-
-
+public class Board extends JPanel {
+    
     private int boardHeight;
     private int boardWidth;
     private boolean[][] board;
@@ -40,7 +39,8 @@ public class Board extends JPanel implements MouseListener {
         this.boardHeight = height;
         board = new boolean[height][width];
 
-        addMouseListener(this);
+        BoardMouse bm = new BoardMouse(this);
+        addMouseListener(bm);
     }
 
     /**
@@ -188,36 +188,5 @@ public class Board extends JPanel implements MouseListener {
                 }
             }
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-        int xCoord = e.getX() / 10;
-        int yCoord = e.getY() / 10;
-
-        if (isAlive(xCoord, yCoord)) {
-            setDead(xCoord, yCoord);
-        } else {
-            setAlive(xCoord, yCoord);
-        }
-
-        repaint();
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 }

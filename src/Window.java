@@ -15,6 +15,7 @@ public class Window {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(1600, 900);
         b = new Board(100, 100);
+
         b.setAlive(0, 0);
         b.setAlive(3, 4);
         f.getContentPane().add(b);
